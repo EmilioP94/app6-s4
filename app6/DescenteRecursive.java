@@ -55,22 +55,34 @@ public class DescenteRecursive {
             case "+":
                 n2 = E();
                 e = new NoeudAST(n1, n2, "+");
+                break;
             case "-":
                 n2 = E();
                 e = new NoeudAST(n1, n2, "-");
+                break;
             case "*":
                 n2 = E();
                 e = new NoeudAST(n1, n2, "*");
+                break;
             case "/":
                 n2 = E();
                 e = new NoeudAST(n1, n2, "/");
+                break;
         }
 
         return e;
     }
 
     public FeuilleAST T(Terminal terminal) {
-        return new FeuilleAST(Integer.parseInt(terminal.getChaine()));
+        FeuilleAST feuille = null;
+        String chaine = terminal.getChaine();
+        if (chaine != "") {
+            feuille = new FeuilleAST(Integer.parseInt(chaine));
+        } else {
+            feuille = new FeuilleAST(0);
+        }
+        return feuille;
+
     }
 
 

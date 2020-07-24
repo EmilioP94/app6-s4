@@ -49,7 +49,21 @@ private int state;
           if(nextChar == '+') {
             unit = "+";
             terminal.setChaine(unit);
-
+            return terminal;
+          }
+          else if(nextChar == '-') {
+            unit = "-";
+            terminal.setChaine(unit);
+            return terminal;
+          }
+          else if(nextChar == '*') {
+            unit = "*";
+            terminal.setChaine(unit);
+            return terminal;
+          }
+          else if(nextChar == '/') {
+            unit = "/";
+            terminal.setChaine(unit);
             return terminal;
           }
           else if (nextChar != '0' && nextChar != '1') {

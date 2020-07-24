@@ -22,7 +22,7 @@ public class NoeudAST extends ElemAST {
   /** Evaluation de noeud d'AST
    */
   public int EvalAST( ) {
-    switch (op) { // autres operations a implementer
+    switch (op) {
       case "+":
         return enfant_gauche.EvalAST() + enfant_droite.EvalAST();
       case "*":
@@ -40,7 +40,7 @@ public class NoeudAST extends ElemAST {
   /** Lecture de noeud d'AST
    */
   public String LectAST( ) {
-     return "(" + enfant_gauche.LectAST() + '+' + enfant_droite.LectAST() + ")";
+     return "(" + enfant_gauche.LectAST() + op + enfant_droite.LectAST() + ")";
   }
 
 }

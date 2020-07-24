@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : (1+(11+(0+(101+1))))
-Evaluation de l'AST trouve : 114
+Lecture de l'AST trouve : (11+(1+(10*(10+(100/10)))))
+Evaluation de l'AST trouve : 212
