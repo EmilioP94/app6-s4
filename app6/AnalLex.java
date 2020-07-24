@@ -3,6 +3,8 @@ package app6;
 /** @author Ahmed Khoumsi */
 
 
+
+
 /** Cette classe effectue l'analyse lexicale
  */
 public class AnalLex {
@@ -11,8 +13,12 @@ public class AnalLex {
 private final String stringToAnalyse;
 private int pointeurLecture;
 private int state;
+private final String validCharRegEx = "[0-9a-zA-Z_]+";
+private final String numberRegEx = "[0-9]+";
+//private final String wordRegEx = "[A-Z](((_?[A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
 
-	
+private final String wordRegEx = "[A-Z]_?((([A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
+
 /** Constructeur pour l'initialisation d'attribut(s)
  * @param stringToAnalyse le string à analyser
  */
@@ -46,27 +52,17 @@ private int state;
       this.pointeurLecture++;
       switch (state) {
         case 0:
-          if(nextChar == '+') {
-            unit = "+";
+          if( nextChar == '+' ||
+              nextChar == '-' ||
+              nextChar == '*' ||
+              nextChar == '/' ||
+              nextChar == '(' ||
+              nextChar == ')'){
+            unit = Character.toString(nextChar);
             terminal.setChaine(unit);
             return terminal;
           }
-          else if(nextChar == '-') {
-            unit = "-";
-            terminal.setChaine(unit);
-            return terminal;
-          }
-          else if(nextChar == '*') {
-            unit = "*";
-            terminal.setChaine(unit);
-            return terminal;
-          }
-          else if(nextChar == '/') {
-            unit = "/";
-            terminal.setChaine(unit);
-            return terminal;
-          }
-          else if (nextChar != '0' && nextChar != '1') {
+          else if (!String.valueOf(nextChar).matches(validCharRegEx)) {
             ErreurLex("not a valid character");
           }
           else {
@@ -76,13 +72,19 @@ private int state;
           }
 
         case 1:
-          if (nextChar == '0' || nextChar == '1'){
+          if (String.valueOf(nextChar).matches(validCharRegEx)){
             unit += nextChar;
             if (!resteTerminal())
               terminal.setChaine(unit);
           }
           else {
-            terminal.setChaine(unit);
+            boolean matchesNumber = unit.matches(numberRegEx);
+            boolean matchesWord = unit.matches(wordRegEx);
+            if ( matchesNumber || matchesWord ){
+              terminal.setChaine(unit);
+            } else {
+              ErreurLex("Invalid string");
+            }
             this.state = 0;
             this.pointeurLecture--;
             return terminal;

@@ -13,6 +13,7 @@ public class DescenteRecursive {
 
     private Reader reader;
     private AnalLex lexical;
+    private final String syntaxRegEx = "[A-Z](((_?[A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
 
     /** Constructeur de DescenteRecursive :
      - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -77,7 +78,12 @@ public class DescenteRecursive {
         FeuilleAST feuille = null;
         String chaine = terminal.getChaine();
         if (chaine != "") {
-            feuille = new FeuilleAST(Integer.parseInt(chaine));
+            try {
+                feuille = new FeuilleAST(Integer.parseInt(chaine));
+            } catch (Exception e) {
+                feuille = new FeuilleAST(chaine);
+            }
+
         } else {
             feuille = new FeuilleAST(0);
         }
@@ -109,8 +115,8 @@ public class DescenteRecursive {
             ElemAST RacineAST = dr.AnalSynt();
             toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
             System.out.println(toWriteLect);
-            toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
-            System.out.println(toWriteEval);
+            //toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
+            //System.out.println(toWriteEval);
             Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite
             // dans fichier args[1]
         } catch (Exception e) {
