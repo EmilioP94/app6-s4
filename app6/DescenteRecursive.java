@@ -63,8 +63,7 @@ public class DescenteRecursive {
                 n2 = E();
                 e = new NoeudAST(n1, n2, "-");
                 break;
-            case ")":
-                terminal = lexical.prochainTerminal();
+            default:
                 e = n1;
                 break;
         }
@@ -97,14 +96,9 @@ public class DescenteRecursive {
                 n2 = F();
                 e = new NoeudAST(n1, n2, "/");
                 break;
-            case "+":
-                e = n1;
-                break;
-            case "-":
-                e = n1;
-                break;
             default:
-                throw new Error("bullshit ass");
+                e = n1;
+                break;
         }
 
         return e;
@@ -120,13 +114,10 @@ public class DescenteRecursive {
 
         if (chaine.equals("(")) {
             terminal = lexical.prochainTerminal();
-            chaine = terminal.getChaine();
             e = E();
-            // a verifier
-//            terminal = lexical.prochainTerminal();
             chaine = terminal.getChaine();
             if (chaine.equals(")")) {
-                terminal = lexical.prochainTerminal();
+
             } else {
                 throw new Error("Pas de parenthese fermante");
             }
@@ -141,7 +132,7 @@ public class DescenteRecursive {
     public FeuilleAST T() {
         FeuilleAST feuille = null;
         String chaine = terminal.getChaine();
-        if (chaine != "") {
+        if (!chaine.equals("")) {
             try {
                 feuille = new FeuilleAST(Integer.parseInt(chaine));
             } catch (Exception e) {

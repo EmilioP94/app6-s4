@@ -1,1 +1,2 @@
-Lecture de l'AST trouve : X_a+Y_b*Z_c/59
+Lecture de l'AST trouve : 3+5*8+0
+Evaluation de l'AST trouve : 64
