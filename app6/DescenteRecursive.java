@@ -13,6 +13,7 @@ public class DescenteRecursive {
 
     private Reader reader;
     private AnalLex lexical;
+    private Terminal terminal;
     private final String syntaxRegEx = "[A-Z](((_?[A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
 
     /** Constructeur de DescenteRecursive :
@@ -29,6 +30,7 @@ public class DescenteRecursive {
      *    Elle retourne une reference sur la racine de l'AST construit
      */
     public ElemAST AnalSynt() {
+        this.terminal = lexical.prochainTerminal();
         ElemAST racine = null;
         racine = E();
         return racine;
@@ -38,35 +40,58 @@ public class DescenteRecursive {
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 
     public ElemAST E() {
-        Terminal t = null;
         String chaine = null;
         ElemAST e = null;
         ElemAST n1 = null;
         ElemAST n2 = null;
 
-        t = lexical.prochainTerminal();
-        n1 = T(t);
+        n1 = F();
         if (!lexical.resteTerminal()) {
             e = n1;
+            return e;
         }
 
-        t = lexical.prochainTerminal();
-        chaine = t.getChaine();
+        terminal = lexical.prochainTerminal();
+        chaine = terminal.getChaine();
         switch (chaine) {
             case "+":
+                terminal = lexical.prochainTerminal();
                 n2 = E();
                 e = new NoeudAST(n1, n2, "+");
                 break;
             case "-":
+                terminal = lexical.prochainTerminal();
                 n2 = E();
                 e = new NoeudAST(n1, n2, "-");
                 break;
+        }
+
+        return e;
+    }
+
+    public ElemAST F() {
+        String chaine = null;
+        ElemAST e = null;
+        ElemAST n1 = null;
+        ElemAST n2 = null;
+
+        n1 = G();
+        if (!lexical.resteTerminal()) {
+            e = n1;
+            return e;
+        }
+
+        terminal = lexical.prochainTerminal();
+        chaine = terminal.getChaine();
+        switch (chaine) {
             case "*":
-                n2 = E();
+                terminal = lexical.prochainTerminal();
+                n2 = F();
                 e = new NoeudAST(n1, n2, "*");
                 break;
             case "/":
-                n2 = E();
+                terminal = lexical.prochainTerminal();
+                n2 = F();
                 e = new NoeudAST(n1, n2, "/");
                 break;
         }
@@ -74,7 +99,35 @@ public class DescenteRecursive {
         return e;
     }
 
-    public FeuilleAST T(Terminal terminal) {
+    public ElemAST G() {
+        String chaine = null;
+        ElemAST e = null;
+        ElemAST n1 = null;
+        ElemAST n2 = null;
+
+        chaine = terminal.getChaine();
+
+        if (chaine.equals("(")) {
+            terminal = lexical.prochainTerminal();
+            chaine = terminal.getChaine();
+            e = E();
+            // a verifier
+            terminal = lexical.prochainTerminal();
+            chaine = terminal.getChaine();
+            if (chaine.equals(")")) {
+                terminal = lexical.prochainTerminal();
+            } else {
+                throw new Error("Pas de parenthese fermante");
+            }
+        } else {
+            terminal = lexical.prochainTerminal();
+            e = T();
+        }
+
+        return e;
+    }
+
+    public FeuilleAST T() {
         FeuilleAST feuille = null;
         String chaine = terminal.getChaine();
         if (chaine != "") {

@@ -15,9 +15,7 @@ private int pointeurLecture;
 private int state;
 private final String validCharRegEx = "[0-9a-zA-Z_]+";
 private final String numberRegEx = "[0-9]+";
-//private final String wordRegEx = "[A-Z](((_?[A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
-
-private final String wordRegEx = "[A-Z]_?((([A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
+private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
 
 /** Constructeur pour l'initialisation d'attribut(s)
  * @param stringToAnalyse le string à analyser

@@ -1,0 +1,26 @@
+Vt = {
+        chiffre,
+        RegEx mot,
+        +,
+        -,
+        *,
+        /,
+        (,
+        )
+     }
+
+Vn = {
+        E -> addition / soustraction,
+        F -> multiplication / division,
+        G -> exp entre parenthèses,
+        T -> Terme
+     }
+
+P = {
+        E -> F [op E]
+        F -> G [op F]
+        G -> (E)
+        G -> T
+        T -> chiffre
+        T -> RegEx mot
+    }
