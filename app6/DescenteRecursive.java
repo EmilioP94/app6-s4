@@ -14,7 +14,6 @@ public class DescenteRecursive {
     private Reader reader;
     private AnalLex lexical;
     private Terminal terminal;
-    private final String syntaxRegEx = "[A-Z](((_?[A-Za-z])?)+((_?[a-zA-Z])?)+[^_ ])?";
 
     /** Constructeur de DescenteRecursive :
      - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -51,7 +50,7 @@ public class DescenteRecursive {
             return e;
         }
 
-        terminal = lexical.prochainTerminal();
+//        terminal = lexical.prochainTerminal();
         chaine = terminal.getChaine();
         switch (chaine) {
             case "+":
@@ -63,6 +62,10 @@ public class DescenteRecursive {
                 terminal = lexical.prochainTerminal();
                 n2 = E();
                 e = new NoeudAST(n1, n2, "-");
+                break;
+            case ")":
+                terminal = lexical.prochainTerminal();
+                e = n1;
                 break;
         }
 
@@ -94,6 +97,14 @@ public class DescenteRecursive {
                 n2 = F();
                 e = new NoeudAST(n1, n2, "/");
                 break;
+            case "+":
+                e = n1;
+                break;
+            case "-":
+                e = n1;
+                break;
+            default:
+                throw new Error("bullshit ass");
         }
 
         return e;
@@ -112,7 +123,7 @@ public class DescenteRecursive {
             chaine = terminal.getChaine();
             e = E();
             // a verifier
-            terminal = lexical.prochainTerminal();
+//            terminal = lexical.prochainTerminal();
             chaine = terminal.getChaine();
             if (chaine.equals(")")) {
                 terminal = lexical.prochainTerminal();
@@ -120,7 +131,7 @@ public class DescenteRecursive {
                 throw new Error("Pas de parenthese fermante");
             }
         } else {
-            terminal = lexical.prochainTerminal();
+//            terminal = lexical.prochainTerminal();
             e = T();
         }
 

@@ -84,7 +84,9 @@ private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
               ErreurLex("Invalid string");
             }
             this.state = 0;
-            this.pointeurLecture--;
+            if (!unit.equals("(") || !unit.equals(")")){
+              this.pointeurLecture--;
+            }
             return terminal;
           }
       }
