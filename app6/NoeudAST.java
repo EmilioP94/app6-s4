@@ -6,26 +6,34 @@ package app6;
  */
 public class NoeudAST extends ElemAST {
 
-  private final ElemAST enfant_gauche;
-  private final ElemAST enfant_droite;
+  private final ElemAST enfantGauche;
+  private final ElemAST enfantDroite;
   private final String op;
   private boolean parentheses = false;
 
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(ElemAST enfant_gauche, ElemAST enfant_droite, String op, boolean parentheses) { // avec parentheses
-    this.enfant_gauche = enfant_gauche;
-    this.enfant_droite = enfant_droite;
+  public NoeudAST(ElemAST enfantGauche, ElemAST enfantDroite, String op, boolean parentheses) { // avec parentheses
+    this.enfantGauche = enfantGauche;
+    this.enfantDroite = enfantDroite;
     this.op = op;
     this.parentheses = parentheses;
   }
 
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(ElemAST enfant_gauche, ElemAST enfant_droite, String op) { // sans parentheses
-    this.enfant_gauche = enfant_gauche;
-    this.enfant_droite = enfant_droite;
+  public NoeudAST(ElemAST enfantGauche, ElemAST enfantDroite, String op) { // sans parentheses
+    this.enfantGauche = enfantGauche;
+    this.enfantDroite = enfantDroite;
     this.op = op;
+  }
+
+  public ElemAST getEnfantGauche() {
+    return this.enfantGauche;
+  }
+
+  public ElemAST getEnfantDroite() {
+    return this.enfantDroite;
   }
 
  
@@ -34,13 +42,13 @@ public class NoeudAST extends ElemAST {
   public int EvalAST( ) {
     switch (op) {
       case "+":
-        return enfant_gauche.EvalAST() + enfant_droite.EvalAST();
+        return enfantGauche.EvalAST() + enfantDroite.EvalAST();
       case "*":
-        return enfant_gauche.EvalAST() * enfant_droite.EvalAST();
+        return enfantGauche.EvalAST() * enfantDroite.EvalAST();
       case "-":
-        return enfant_gauche.EvalAST() - enfant_droite.EvalAST();
+        return enfantGauche.EvalAST() - enfantDroite.EvalAST();
       case "/":
-        return enfant_gauche.EvalAST() / enfant_droite.EvalAST();
+        return enfantGauche.EvalAST() / enfantDroite.EvalAST();
       default:
         throw new Error("Operation non supportee: " + op);
     }
@@ -51,9 +59,9 @@ public class NoeudAST extends ElemAST {
    */
   public String LectAST( ) {
     if (parentheses) {
-      return  "(" + enfant_gauche.LectAST() + op + enfant_droite.LectAST() + ")";
+      return  "(" + enfantGauche.LectAST() + op + enfantDroite.LectAST() + ")";
     } else {
-      return  enfant_gauche.LectAST() + op + enfant_droite.LectAST();
+      return  enfantGauche.LectAST() + op + enfantDroite.LectAST();
     }
 
   }

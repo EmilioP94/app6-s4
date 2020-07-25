@@ -14,6 +14,7 @@ public class DescenteRecursive {
     private Reader reader;
     private AnalLex lexical;
     private Terminal terminal;
+    private String postfix = "";
 
     /** Constructeur de DescenteRecursive :
      - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -144,6 +145,17 @@ public class DescenteRecursive {
         }
         return feuille;
 
+    }
+
+    public void ASTToPostfix(ElemAST ast) {
+        if (ast instanceof NoeudAST) {
+            ASTToPostfix(((NoeudAST) ast).getEnfantGauche());
+        } else {
+            postfix += ast.LectAST();
+        }
+        if (ast instanceof NoeudAST) {
+            ASTToPostfix(((NoeudAST) ast).getEnfantDroite());
+        }
     }
 
 
