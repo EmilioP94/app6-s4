@@ -31,14 +31,14 @@ public class DescenteRecursive {
     public ElemAST AnalSynt() {
         this.terminal = lexical.prochainTerminal();
         ElemAST racine = null;
-        racine = E();
+        racine = E(false);
         return racine;
     }
 
 
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 
-    public ElemAST E() {
+    public ElemAST E(boolean parentheses) {
         String chaine = null;
         ElemAST e = null;
         ElemAST n1 = null;
@@ -50,18 +50,17 @@ public class DescenteRecursive {
             return e;
         }
 
-//        terminal = lexical.prochainTerminal();
         chaine = terminal.getChaine();
         switch (chaine) {
             case "+":
                 terminal = lexical.prochainTerminal();
-                n2 = E();
-                e = new NoeudAST(n1, n2, "+");
+                n2 = E(parentheses);
+                e = new NoeudAST(n1, n2, "+", parentheses);
                 break;
             case "-":
                 terminal = lexical.prochainTerminal();
-                n2 = E();
-                e = new NoeudAST(n1, n2, "-");
+                n2 = E(parentheses);
+                e = new NoeudAST(n1, n2, "-", parentheses);
                 break;
             default:
                 e = n1;
@@ -109,12 +108,14 @@ public class DescenteRecursive {
         ElemAST e = null;
         ElemAST n1 = null;
         ElemAST n2 = null;
+        boolean parentheses;
 
         chaine = terminal.getChaine();
 
         if (chaine.equals("(")) {
+            parentheses = true;
             terminal = lexical.prochainTerminal();
-            e = E();
+            e = E(parentheses);
             chaine = terminal.getChaine();
             if (chaine.equals(")")) {
 
@@ -122,7 +123,6 @@ public class DescenteRecursive {
                 throw new Error("Pas de parenthese fermante");
             }
         } else {
-//            terminal = lexical.prochainTerminal();
             e = T();
         }
 
@@ -170,8 +170,8 @@ public class DescenteRecursive {
             ElemAST RacineAST = dr.AnalSynt();
             toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
             System.out.println(toWriteLect);
-            //toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
-            //System.out.println(toWriteEval);
+            toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
+            System.out.println(toWriteEval);
             Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite
             // dans fichier args[1]
         } catch (Exception e) {

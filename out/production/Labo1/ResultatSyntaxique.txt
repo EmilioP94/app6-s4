@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : 3+5*8+0
-Evaluation de l'AST trouve : 64
+Lecture de l'AST trouve : (1+2)*3
+Evaluation de l'AST trouve : 9

@@ -9,10 +9,20 @@ public class NoeudAST extends ElemAST {
   private final ElemAST enfant_gauche;
   private final ElemAST enfant_droite;
   private final String op;
+  private boolean parentheses = false;
 
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(ElemAST enfant_gauche, ElemAST enfant_droite, String op) { // avec arguments
+  public NoeudAST(ElemAST enfant_gauche, ElemAST enfant_droite, String op, boolean parentheses) { // avec parentheses
+    this.enfant_gauche = enfant_gauche;
+    this.enfant_droite = enfant_droite;
+    this.op = op;
+    this.parentheses = parentheses;
+  }
+
+  /** Constructeur pour l'initialisation d'attributs
+   */
+  public NoeudAST(ElemAST enfant_gauche, ElemAST enfant_droite, String op) { // sans parentheses
     this.enfant_gauche = enfant_gauche;
     this.enfant_droite = enfant_droite;
     this.op = op;
@@ -40,7 +50,12 @@ public class NoeudAST extends ElemAST {
   /** Lecture de noeud d'AST
    */
   public String LectAST( ) {
-     return  enfant_gauche.LectAST() + op + enfant_droite.LectAST();
+    if (parentheses) {
+      return  "(" + enfant_gauche.LectAST() + op + enfant_droite.LectAST() + ")";
+    } else {
+      return  enfant_gauche.LectAST() + op + enfant_droite.LectAST();
+    }
+
   }
 
 }

@@ -66,6 +66,9 @@ private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
           else {
             unit += nextChar;
             this.state = 1;
+            if (!resteTerminal()) {
+              terminal.setChaine(unit);
+            }
             break;
           }
 
