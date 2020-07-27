@@ -9,13 +9,32 @@ package app6;
  */
 public class AnalLex {
 
+  enum Etat {
+    INIT,
+    NUMBER,
+    UNIT_END,
+    OP,
+    VARIABLE,
+    UNDERSCORE,
+    ERR_INIT,
+    ERR_VARIABLE,
+    ERR_NUMBER,
+    ERR_UNDERSCORE
+  }
+
+  private String lowercase = "abcdefghijklmnopqrstuvwxyz";
+  private String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYS";
+  private String underscore = "_";
+  private String number = "0123456789";
+
 // Attributs
-private final String stringToAnalyse;
-private int pointeurLecture;
-private int state;
-private final String validCharRegEx = "[0-9a-zA-Z_]+";
-private final String numberRegEx = "[0-9]+";
-private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
+  private final String stringToAnalyse;
+  private int pointeurLecture;
+  private int state;
+  private Etat etat;
+  private final String validCharRegEx = "[0-9a-zA-Z_]+";
+  private final String numberRegEx = "[0-9]+";
+  private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
 
 /** Constructeur pour l'initialisation d'attribut(s)
  * @param stringToAnalyse le string à analyser
@@ -24,6 +43,7 @@ private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
     this.stringToAnalyse = stringToAnalyse;
     this.pointeurLecture = 0;
     this.state = 0;
+    this.etat = Etat.INIT;
   }
 
 
