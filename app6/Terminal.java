@@ -11,6 +11,7 @@ public class Terminal {
 // Constantes et attributs
 //  ....
   private String chaine;
+  private String type;
 
 
 /** Un ou deux constructeurs (ou plus, si vous voulez)
@@ -22,6 +23,7 @@ public class Terminal {
 
   public Terminal() {   // arguments possibles
     this.chaine = "";
+    this.type = "";
   }
 
   public String getChaine() {
@@ -30,6 +32,14 @@ public class Terminal {
 
   public void setChaine(String chaine) {
     this.chaine = chaine;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getType(){
+    return this.type;
   }
 
 }

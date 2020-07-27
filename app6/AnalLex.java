@@ -29,6 +29,7 @@ public class AnalLex {
   private int pointeurLecture;
   private int state;
   private Etat etat;
+  private Etat etatPrecedent;
   private final String validCharRegEx = "[0-9a-zA-Z_]+";
   private final String numberRegEx = "[0-9]+";
   private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
@@ -63,7 +64,7 @@ public class AnalLex {
     Terminal terminal = new Terminal();
     String unit = "";
     while (resteTerminal()) {
-      printState();
+      //printState();
       char nextChar = nextCharValue();
       while (nextChar == ' ') {
         pointeurLecture ++;
@@ -80,6 +81,8 @@ public class AnalLex {
           } else if (this.operator.contains(Character.toString(nextChar))) {
             etat = Etat.OP;
             break;
+          } else if (this.lowercase.contains(Character.toString(nextChar))) {
+            ErreurLex("Variables must start with an uppercase letter: character '" + nextChar + "' at position " + pointeurLecture + " is lowercase.");
           } else {
             ErreurLex("invalid first character: " + nextChar);
             break;
@@ -90,10 +93,12 @@ public class AnalLex {
             this.pointeurLecture++;
             if (!resteTerminal()) {
               terminal.setChaine(unit);
+              terminal.setType("Number");
               return terminal;
             }
             break;
           } else if (this.operator.contains(Character.toString(nextChar))) {
+            etatPrecedent = Etat.NUMBER;
             etat = Etat.UNIT_END;
             break;
           } else {
@@ -102,12 +107,14 @@ public class AnalLex {
           }
         case UNIT_END:
           terminal.setChaine(unit);
+          terminal.setType(getEtatPrecedent());
           etat = Etat.INIT;
           return terminal;
         case OP:
           //pas besoin de valider si operateur valide car deja validé dans etat INIT
           unit = Character.toString(nextChar);
           terminal.setChaine(unit);
+          terminal.setType("Operateur");
           pointeurLecture ++;
           etat = Etat.INIT;
           return terminal;
@@ -117,6 +124,7 @@ public class AnalLex {
             pointeurLecture ++;
             if (!resteTerminal()) {
               terminal.setChaine(unit);
+              terminal.setType("Variable");
               return terminal;
             }
             break;
@@ -127,6 +135,7 @@ public class AnalLex {
             pointeurLecture ++;
             break;
           } else if (this.operator.contains(Character.toString(nextChar))) {
+            etatPrecedent = Etat.NUMBER;
             etat = Etat.UNIT_END;
             break;
           } else {
@@ -170,6 +179,17 @@ public class AnalLex {
       System.out.println("Underscore");
   }
 
+  public String getEtatPrecedent() {
+    switch (etatPrecedent){
+      case NUMBER:
+        return "Number";
+      case VARIABLE:
+        return "Variable";
+      case OP:
+        return "Op";
+    }
+    return null;
+  }
 
   //Methode principale a lancer pour tester l'analyseur lexical
   public static void main(String[] args) {
@@ -188,7 +208,7 @@ public class AnalLex {
     Terminal t = null;
     while(lexical.resteTerminal()){
       t = lexical.prochainTerminal();
-      toWrite += t.getChaine() + "\n" ;  // toWrite contient le resultat
+      toWrite += t.getChaine() + "\t" + t.getType() + "\n" ;  // toWrite contient le resultat
     }				   //    d'analyse lexicale
     System.out.println(toWrite); 	// Ecriture de toWrite sur la console
     Writer w = new Writer(args[1],toWrite); // Ecriture de toWrite dans fichier args[1]

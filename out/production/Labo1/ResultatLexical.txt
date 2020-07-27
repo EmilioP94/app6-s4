@@ -1,13 +1,11 @@
-(
-U_x
-+
-V_y
-)
-*
-W_z
-/
-35
-+
-A
-+
-+
+(	Operateur
+U_x	Number
++	Operateur
+V_y	Number
+)	Operateur
+*	Operateur
+W_z	Number
+/	Operateur
+35	Number
++	Operateur
+A	Variable
