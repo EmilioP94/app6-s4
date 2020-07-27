@@ -120,7 +120,7 @@ public class DescenteRecursive {
             if (chaine.equals(")")) {
 
             } else {
-                throw new Error("Pas de parenthese fermante");
+                throw new Error("Expected closing parenthesis at column " + lexical.getPointeurLecture() + ". Character received: " + chaine + ".");
             }
         } else {
             e = T();
@@ -167,20 +167,33 @@ public class DescenteRecursive {
             args[1] = "ResultatSyntaxique.txt";
         }
         DescenteRecursive dr = new DescenteRecursive(args[0]);
+        ElemAST RacineAST = dr.AnalSynt();
         try {
-            ElemAST RacineAST = dr.AnalSynt();
             toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
             System.out.println(toWriteLect);
-            toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
-            System.out.println(toWriteEval);
-            toWritePostfix += "Evaluation postfix de l'AST trouve: " + RacineAST.postfixAST();
-            System.out.println(toWritePostfix);
-            Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite dans fichier args[1]
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
             System.exit(51);
         }
+        try {
+            toWritePostfix += "Evaluation postfix de l'AST trouve: " + RacineAST.postfixAST() + "\n";
+            System.out.println(toWritePostfix);
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+            System.exit(51);
+        }
+        toWriteEval += "Evaluation de l'AST trouve : ";
+        try {
+             toWriteEval += RacineAST.EvalAST() + "\n";
+            System.out.println(toWriteEval);
+        } catch (Exception e) {
+            toWriteEval += "Cannot evaluate expression";
+            System.out.println(toWriteEval + " - " + e.getMessage() + "\n");
+//            e.printStackTrace();
+        }
+        Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite dans fichier args[1]
         System.out.println("Analyse syntaxique terminee");
     }
 

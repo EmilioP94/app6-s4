@@ -26,6 +26,11 @@ public class AnalLex {
 
   // Attributs
   private final String stringToAnalyse;
+
+  public int getPointeurLecture() {
+    return pointeurLecture;
+  }
+
   private int pointeurLecture;
   private int state;
   private Etat etat;

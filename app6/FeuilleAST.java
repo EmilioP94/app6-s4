@@ -26,7 +26,10 @@ public class FeuilleAST extends ElemAST {
 
   /** Evaluation de feuille d'AST
    */
-  public int EvalAST( ) {
+  public int EvalAST( ) throws ReadException {
+      if (texte != null) {
+        ErreurEvalAST("Cannot evaluate values for strings");
+      }
     return valeur;
   }
 
@@ -41,9 +44,9 @@ public class FeuilleAST extends ElemAST {
     return returnValue;
   }
 
-    @Override
-    public String postfixAST() {
-        return this.LectAST() + " ";
-    }
+
+  public String postfixAST() {
+      return this.LectAST() + " ";
+  }
 
 }
