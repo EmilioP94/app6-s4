@@ -57,7 +57,7 @@ public class NoeudAST extends ElemAST {
   }
 
   public String postfixAST() {
-    return enfantGauche.postfixAST() + enfantDroite.postfixAST() + op;
+    return enfantGauche.postfixAST() + enfantDroite.postfixAST() + op + " ";
   }
 
 }

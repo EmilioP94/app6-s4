@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : ((55-47)*(14/2))
-Evaluation de l'AST trouve : 56
+Lecture de l'AST trouve : ((U_x+V_y)*(W_z/35))
+Evaluation de l'AST trouve : 0

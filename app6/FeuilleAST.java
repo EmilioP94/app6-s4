@@ -43,7 +43,7 @@ public class FeuilleAST extends ElemAST {
 
     @Override
     public String postfixAST() {
-        return this.LectAST();
+        return this.LectAST() + " ";
     }
 
 }
