@@ -1,8 +1,6 @@
 package app6;
 
-/** @author Ahmed Khoumsi */
-
-
+/** @authors Emile Paquette, Jeff Miller-Chauvin, Élodie Amar */
 
 
 /** Cette classe effectue l'analyse lexicale
@@ -35,9 +33,6 @@ public class AnalLex {
   private int state;
   private Etat etat;
   private Etat etatPrecedent;
-  private final String validCharRegEx = "[0-9a-zA-Z_]+";
-  private final String numberRegEx = "[0-9]+";
-  private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
 
   /** Constructeur pour l'initialisation d'attribut(s)
    * @param stringToAnalyse le string à analyser
@@ -58,6 +53,8 @@ public class AnalLex {
     return this.pointeurLecture < this.stringToAnalyse.length();
   }
 
+  /** Retourne la valeur du prochain caractère
+   */
   private char nextCharValue() {
     return this.stringToAnalyse.charAt(this.pointeurLecture);
   }
@@ -69,7 +66,6 @@ public class AnalLex {
     Terminal terminal = new Terminal();
     String unit = "";
     while (resteTerminal()) {
-      //printState();
       char nextChar = nextCharValue();
       while (nextChar == ' ') {
         pointeurLecture ++;
@@ -116,7 +112,6 @@ public class AnalLex {
           etat = Etat.INIT;
           return terminal;
         case OP:
-          //pas besoin de valider si operateur valide car deja validé dans etat INIT
           unit = Character.toString(nextChar);
           terminal.setChaine(unit);
           terminal.setType("Operateur");
@@ -171,19 +166,10 @@ public class AnalLex {
     throw new Error(s);
   }
 
-  public void printState() {
-    if (this.etat == Etat.INIT)
-      System.out.println("Init");
-    if (this.etat == Etat.NUMBER)
-      System.out.println("Number");
-    if (this.etat == Etat.VARIABLE)
-      System.out.println("Variable");
-    if (this.etat == Etat.OP)
-      System.out.println("Op");
-    if (this.etat == Etat.UNDERSCORE)
-      System.out.println("Underscore");
-  }
-
+  /**
+   * Retourne l'état précedent
+   * @return String etatPrecedent: l'état précedent
+   */
   public String getEtatPrecedent() {
     switch (etatPrecedent){
       case NUMBER:

@@ -24,7 +24,6 @@ public class DescenteRecursive {
         this.lexical = new AnalLex(reader.toString());
     }
 
-
     /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
      *    Elle retourne une reference sur la racine de l'AST construit
      */
@@ -35,30 +34,33 @@ public class DescenteRecursive {
         return racine;
     }
 
-
-// Methode pour chaque symbole non-terminal de la grammaire retenue
+    // Methode pour chaque symbole non-terminal de la grammaire retenue
 
     public ElemAST E(boolean parentheses) {
         String chaine = null;
         ElemAST e = null;
         ElemAST n1 = null;
         ElemAST n2 = null;
-
         n1 = F();
         if (!lexical.resteTerminal()) {
             e = n1;
             return e;
         }
-
         chaine = terminal.getChaine();
         switch (chaine) {
             case "+":
                 terminal = lexical.prochainTerminal();
+                if (terminal.getType() == "Operateur"){
+                    throw new Error("Expected either a value or a variable. Element '" + terminal.getChaine() + "' at index " + lexical.getPointeurLecture() + " is invalid.");
+                }
                 n2 = E(parentheses);
                 e = new NoeudAST(n1, n2, "+", parentheses);
                 break;
             case "-":
                 terminal = lexical.prochainTerminal();
+                if (terminal.getType() == "Operateur"){
+                    throw new Error("Expected either a value or a variable. Element '" + terminal.getChaine() + "' at index " + lexical.getPointeurLecture() + " is invalid.");
+                }
                 n2 = E(parentheses);
                 e = new NoeudAST(n1, n2, "-", parentheses);
                 break;
@@ -66,7 +68,6 @@ public class DescenteRecursive {
                 e = n1;
                 break;
         }
-
         return e;
     }
 
@@ -75,23 +76,27 @@ public class DescenteRecursive {
         ElemAST e = null;
         ElemAST n1 = null;
         ElemAST n2 = null;
-
         n1 = G();
         if (!lexical.resteTerminal()) {
             e = n1;
             return e;
         }
-
         terminal = lexical.prochainTerminal();
         chaine = terminal.getChaine();
         switch (chaine) {
             case "*":
                 terminal = lexical.prochainTerminal();
+                if (terminal.getType() == "Operateur"){
+                    throw new Error("Expected either a value or a variable. Element '" + terminal.getChaine() + "' at index " + lexical.getPointeurLecture() + " is invalid.");
+                }
                 n2 = F();
                 e = new NoeudAST(n1, n2, "*");
                 break;
             case "/":
                 terminal = lexical.prochainTerminal();
+                if (terminal.getType() == "Operateur"){
+                    throw new Error("Expected either a value or a variable. Element '" + terminal.getChaine() + "' at index " + lexical.getPointeurLecture() + " is invalid.");
+                }
                 n2 = F();
                 e = new NoeudAST(n1, n2, "/");
                 break;
@@ -99,7 +104,6 @@ public class DescenteRecursive {
                 e = n1;
                 break;
         }
-
         return e;
     }
 
@@ -109,9 +113,7 @@ public class DescenteRecursive {
         ElemAST n1 = null;
         ElemAST n2 = null;
         boolean parentheses;
-
         chaine = terminal.getChaine();
-
         if (chaine.equals("(")) {
             parentheses = true;
             terminal = lexical.prochainTerminal();
@@ -120,12 +122,11 @@ public class DescenteRecursive {
             if (chaine.equals(")")) {
 
             } else {
-                throw new Error("Expected closing parenthesis at column " + lexical.getPointeurLecture() + ". Character received: " + chaine + ".");
+                throw new Error("Expected closing parenthesis before the end of the expression");
             }
         } else {
             e = T();
         }
-
         return e;
     }
 
@@ -138,12 +139,10 @@ public class DescenteRecursive {
             } catch (Exception e) {
                 feuille = new FeuilleAST(chaine);
             }
-
         } else {
             feuille = new FeuilleAST(0);
         }
         return feuille;
-
     }
 
 
