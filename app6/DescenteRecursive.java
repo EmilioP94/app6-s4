@@ -14,7 +14,6 @@ public class DescenteRecursive {
     private Reader reader;
     private AnalLex lexical;
     private Terminal terminal;
-    private String postfix = "";
 
     /** Constructeur de DescenteRecursive :
      - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -147,18 +146,6 @@ public class DescenteRecursive {
 
     }
 
-    public void ASTToPostfix(ElemAST ast) {
-        if (ast instanceof NoeudAST) {
-            ASTToPostfix(((NoeudAST) ast).getEnfantGauche());
-        } else {
-            postfix += ast.LectAST();
-        }
-        if (ast instanceof NoeudAST) {
-            ASTToPostfix(((NoeudAST) ast).getEnfantDroite());
-            postfix += ((NoeudAST) ast).getOp();
-        }
-    }
-
 
     /** ErreurSynt() envoie un message d'erreur syntaxique
      */
@@ -171,6 +158,7 @@ public class DescenteRecursive {
     public static void main(String[] args) {
         String toWriteLect = "";
         String toWriteEval = "";
+        String toWritePostfix = "";
 
         System.out.println("Debut d'analyse syntaxique");
         if (args.length == 0) {
@@ -183,11 +171,11 @@ public class DescenteRecursive {
             ElemAST RacineAST = dr.AnalSynt();
             toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
             System.out.println(toWriteLect);
-            //toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
-            //System.out.println(toWriteEval);
-            // Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite dans fichier args[1]
-            dr.ASTToPostfix(RacineAST);
-            System.out.println(dr.postfix);
+            toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
+            System.out.println(toWriteEval);
+            toWritePostfix += "Evaluation postfix de l'AST trouve: " + RacineAST.postfixAST();
+            System.out.println(toWritePostfix);
+            Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite dans fichier args[1]
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();

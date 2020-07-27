@@ -28,19 +28,10 @@ public class NoeudAST extends ElemAST {
     this.op = op;
   }
 
-  public ElemAST getEnfantGauche() {
-    return this.enfantGauche;
-  }
-
-  public ElemAST getEnfantDroite() {
-    return this.enfantDroite;
-  }
-
   public String getOp() {
     return this.op;
   }
 
- 
   /** Evaluation de noeud d'AST
    */
   public int EvalAST( ) {
@@ -62,12 +53,11 @@ public class NoeudAST extends ElemAST {
   /** Lecture de noeud d'AST
    */
   public String LectAST( ) {
-    if (parentheses) {
       return  "(" + enfantGauche.LectAST() + op + enfantDroite.LectAST() + ")";
-    } else {
-      return  enfantGauche.LectAST() + op + enfantDroite.LectAST();
-    }
+  }
 
+  public String postfixAST() {
+    return enfantGauche.postfixAST() + enfantDroite.postfixAST() + op;
   }
 
 }

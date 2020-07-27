@@ -41,4 +41,9 @@ public class FeuilleAST extends ElemAST {
     return returnValue;
   }
 
+    @Override
+    public String postfixAST() {
+        return this.LectAST();
+    }
+
 }
