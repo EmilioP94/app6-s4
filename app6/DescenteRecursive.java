@@ -130,7 +130,7 @@ public class DescenteRecursive {
         return e;
     }
 
-    public FeuilleAST T() {
+    public ElemAST T() {
         FeuilleAST feuille = null;
         String chaine = terminal.getChaine();
         if (!chaine.equals("")) {
@@ -155,6 +155,7 @@ public class DescenteRecursive {
         }
         if (ast instanceof NoeudAST) {
             ASTToPostfix(((NoeudAST) ast).getEnfantDroite());
+            postfix += ((NoeudAST) ast).getOp();
         }
     }
 
@@ -182,10 +183,11 @@ public class DescenteRecursive {
             ElemAST RacineAST = dr.AnalSynt();
             toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
             System.out.println(toWriteLect);
-            toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
-            System.out.println(toWriteEval);
-            Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite
-            // dans fichier args[1]
+            //toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
+            //System.out.println(toWriteEval);
+            // Writer w = new Writer(args[1], toWriteLect + toWriteEval); // Ecriture de toWrite dans fichier args[1]
+            dr.ASTToPostfix(RacineAST);
+            System.out.println(dr.postfix);
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();

@@ -84,7 +84,7 @@ private final String wordRegEx = "[A-Z](_?[a-zA-Z])*";
             if ( matchesNumber || matchesWord ){
               terminal.setChaine(unit);
             } else {
-              ErreurLex("Invalid string");
+              ErreurLex("Invalid string near column " + Integer.toString(pointeurLecture) + ": character " + unit + " is not valid.");
             }
             this.state = 0;
             if (!unit.equals("(") || !unit.equals(")")){

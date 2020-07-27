@@ -36,6 +36,10 @@ public class NoeudAST extends ElemAST {
     return this.enfantDroite;
   }
 
+  public String getOp() {
+    return this.op;
+  }
+
  
   /** Evaluation de noeud d'AST
    */

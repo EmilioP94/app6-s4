@@ -1,6 +1,6 @@
-Vt = {
-        chiffre,
-        RegEx mot,
+Vt : {
+        nombre,
+        variable,
         +,
         -,
         *,
@@ -9,18 +9,18 @@ Vt = {
         )
      }
 
-Vn = {
-        E -> addition / soustraction,
-        F -> multiplication / division,
-        G -> exp entre parenthèses,
-        T -> Terme
+Vn : {
+        E,
+        F,
+        G,
+        T
      }
 
-P = {
-        E -> F [op E]
-        F -> G [op F]
+P : {
+        E -> F [(+|-) E]
+        F -> G [(*|/) F]
         G -> (E)
         G -> T
-        T -> chiffre
-        T -> RegEx mot
+        T -> nombre
+        T -> variable
     }
