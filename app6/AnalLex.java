@@ -62,8 +62,13 @@ public class AnalLex {
   public Terminal prochainTerminal( ) {
     Terminal terminal = new Terminal();
     String unit = "";
-    char nextChar = nextCharValue();
     while (resteTerminal()) {
+      printState();
+      char nextChar = nextCharValue();
+      while (nextChar == ' ') {
+        pointeurLecture ++;
+        nextChar = nextCharValue();
+      }
       switch (etat) {
         case INIT:
           if(this.uppercase.contains(Character.toString(nextChar))) {
@@ -87,9 +92,8 @@ public class AnalLex {
               terminal.setChaine(unit);
               return terminal;
             }
-            nextChar = nextCharValue();
             break;
-          } else if(this.operator.contains(Character.toString(nextChar))) {
+          } else if (this.operator.contains(Character.toString(nextChar))) {
             etat = Etat.UNIT_END;
             break;
           } else {
@@ -97,7 +101,6 @@ public class AnalLex {
             break;
           }
         case UNIT_END:
-          pointeurLecture --;
           terminal.setChaine(unit);
           etat = Etat.INIT;
           return terminal;
@@ -117,41 +120,32 @@ public class AnalLex {
               return terminal;
             }
             break;
-          }else if(this.underscore.contains(Character.toString(nextChar))) {
+          }
+          else if (this.underscore.contains(Character.toString(nextChar))) {
+            unit += nextChar;
             etat = Etat.UNDERSCORE;
+            pointeurLecture ++;
+            break;
+          } else if (this.operator.contains(Character.toString(nextChar))) {
+            etat = Etat.UNIT_END;
             break;
           } else {
-            ErreurLex("invalide character: " + nextChar + "at position " + pointeurLecture + ". expected a letter or an underscore.");
+            ErreurLex("Invalid character: " + nextChar + "at position " + pointeurLecture + ". expected a letter or an underscore.");
             break;
           }
         case UNDERSCORE:
-          unit += nextChar;
-          pointeurLecture ++;
-
-        case 0:
-
-
-        case 1:
-          if (String.valueOf(nextChar).matches(validCharRegEx)){
-            unit += nextChar;
-            if (!resteTerminal())
-              terminal.setChaine(unit);
-          }
-          else {
-            boolean matchesNumber = unit.matches(numberRegEx);
-            boolean matchesWord = unit.matches(wordRegEx);
-            if ( matchesNumber || matchesWord ){
-              terminal.setChaine(unit);
-            } else {
-              ErreurLex("Invalid string near column " + pointeurLecture + ": character " + unit + " is not valid.");
-            }
-            this.state = 0;
-            if (!unit.equals("(") || !unit.equals(")")){
-              this.pointeurLecture--;
-            }
-            return terminal;
+          if (this.underscore.contains(Character.toString(nextChar))) {
+            ErreurLex("Two underscores in a row at position: " + pointeurLecture);
+          } else if (this.lowercase.contains(Character.toString(nextChar)) || this.uppercase.contains(Character.toString(nextChar))) {
+            etat = Etat.VARIABLE;
+            break;
+          } else {
+          ErreurLex("Invalid character " + nextChar + " after underscore at position " + pointeurLecture + ", expected a letter.");
           }
       }
+    }
+    if (etat == Etat.UNDERSCORE) {
+      ErreurLex("Cannot end expression with an underscore.");
     }
     return terminal;
   }
@@ -161,6 +155,19 @@ public class AnalLex {
    */
   public void ErreurLex(String s) {
     throw new Error(s);
+  }
+
+  public void printState() {
+    if (this.etat == Etat.INIT)
+      System.out.println("Init");
+    if (this.etat == Etat.NUMBER)
+      System.out.println("Number");
+    if (this.etat == Etat.VARIABLE)
+      System.out.println("Variable");
+    if (this.etat == Etat.OP)
+      System.out.println("Op");
+    if (this.etat == Etat.UNDERSCORE)
+      System.out.println("Underscore");
   }
 
 
